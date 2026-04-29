@@ -145,3 +145,42 @@ FROM Enrollments
 WHERE grade < 40;
 
 -- END OF TASK2
+
+-- TASK3 : JOIN, GROUP BY, HAVING, SUBQUERIES
+
+-- TOP STUDENT PER COURSE
+SELECT c.name AS course, s.name AS student, e.grade
+FROM Enrollments e
+JOIN Students s ON e.student_id = StudentID
+JOIN Courses c ON e.course_id = c.id
+WHERE (e.course_id, e.grade) IN (
+       SELECT course_id, MAX(grade)
+       FROM Enrollments
+       GROUP BY course_id
+);
+
+-- PASS RATE PER COURSE (GRADE >= 40)
+SELECT
+    c.name As course,
+    SUM(CASE WHEN e.grade >= 40 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS pass_rate
+    FROM Enrollments e
+    JOIN Courses c ON e.course_id = c.id
+    GROUP BY c.name;
+    
+    -- OVERALL TOPPER ACROSS ALL COURSES
+    SELECT s.name, MAX(e.grade) AS highest_grade
+    FROM Enrollments e
+    JOIN Students s ON e.student_id = StudentID
+    GROUP BY s.name
+    ORDER BY highest_grade DESC
+    LIMIT 1;
+    
+    -- STUDENTS ENROLLED IN MULTIPLE COURSES
+    SELECT s.name, COUNT(e.course_id) AS total_courses
+    FROM Enrollments e
+    JOIN Students s ON e.student_id = StudentID
+    GROUP BY s.name
+    HAVING COUNT(e.course_id) > 1;
+    
+    -- END OF TASK3
+    
