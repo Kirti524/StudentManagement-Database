@@ -11,3 +11,10 @@
 - Pass Rate Per Course (grdae >= 40)
 - Overall Topper Across All Courses
 - Students Enrolled In Multiple Course
+
+## Task 4 :
+- Average Grade By Gender
+- Pass Rate Per Course
+- Top 3 Students Overall
+- Students In Multiple Courses
+- Improvement Report
