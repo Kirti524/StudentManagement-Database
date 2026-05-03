@@ -184,3 +184,42 @@ SELECT
     
     -- END OF TASK3
     
+-- TASK 4 : SQL QUERIES TO GENERATE THE FOLLOWING REPORTS : 
+    
+    -- 1. AVERAGE GRADE BY GENDER
+   SELECT s.gender, AVG( e.grade) AS  avg_grade
+   FROM Students s 
+   JOIN Enrollments e ON StudentID = e.student_id
+   GROUP BY s.gender;
+   
+   -- 2. PASS RATE PER COURSE
+   SELECT c.name AS course,
+          SUM(CASE WHEN e.grade >= 40 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS pass_rate
+FROM Enrollments e
+JOIN Courses c ON e.course_id = c.id
+GROUP BY c.name;
+
+-- 3. TOP 3 STUDENTS OVERALL
+SELECT s.name, AVG(e.grade) AS avg_grade
+FROM Enrollments e
+JOIN Students s ON e.student_id = StudentID
+GROUP BY s.name
+ORDER BY avg_grade DESC
+LIMIT 3;
+
+-- 4. STUDENTS IN MULTIPLE COURSES
+SELECT s.name, COUNT( e.course_id) AS courses_enrolled
+FROM Enrollments e
+JOIN Students s ON e.student_id = StudentID
+GROUP BY StudentID, s.name
+HAVING COUNT(e.course_id) > 2;
+
+-- 5. IMPROVEMENT REPORT
+SELECT s.name AS student,
+       MAX(e.grade) - MIN(e.grade) AS improvement
+FROM Students s
+JOIN Enrollments e ON StudentID = e.student_id
+GROUP BY StudentID, s.name
+HAVING improvement > 0;
+
+-- END OF TASK 4
